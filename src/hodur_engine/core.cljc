@@ -257,6 +257,10 @@
               (let [recursive (merge recursive (get-recursive field))
                     merged-default (merge-recursive default recursive field)
                     union-field? (-> t meta :union)
+                    separator (get (meta field) :separator)
+                    ->kebab-case-keyword (if separator
+                                           #(->kebab-case-keyword % :separator separator)
+                                           #(->kebab-case-keyword %))
                     init-map (cond-> {:db/id (get-temp-id! t field r)
                                       :node/type :field
                                       :field/name (str field)
